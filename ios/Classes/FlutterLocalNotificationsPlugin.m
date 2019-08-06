@@ -148,8 +148,15 @@ typedef NS_ENUM(NSInteger, RepeatInterval) {
     }
     
     if(@available(iOS 10.0, *)) {
+        // Do not register this plugin as UNUserNotificationCenter's delegate until
+        // this issue is fixed: https://github.com/MaikuB/flutter_local_notifications/issues/111.
+        //
+        // In short: When using this package and the firebase_messaging package together,
+        // both register a delegate for UNUserNotificationCenter. This results in notifications
+        // not getting through to Firebase Messaging.
+
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        center.delegate = self;
+        // center.delegate = self;
         
         UNAuthorizationOptions authorizationOptions = 0;
         if (requestedSoundPermission) {
